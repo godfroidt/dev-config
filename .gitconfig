@@ -1,0 +1,21 @@
+[user]
+	name = Thierry Godfroid
+	email = thierry.godfroid@gmail.com
+[core]
+	excludesfile = /Users/tgo/.gitignore_global
+[alias]
+	today = log --stat --since='1 Day Ago' --graph --pretty=oneline --abbrev-commit --date=relative
+	ls = log --pretty=format:'%Cred%h%Creset %C(yellow)%d%Creset %s %Cgreen(%cr) %C(blue)%an%Creset' --date=relative
+	lso = log --pretty=format:'%Cred%h%Creset %C(yellow)%d%Creset %s %Cgreen(%cr) %C(blue)%an%Creset' --date=relative -1
+	lf = !git ls -i --grep  
+	info = !git status -s && git branch
+	ri = rebase --interactive --autosquash
+	ris = !git stash && git rebase --interactive --autosquash && git stash pop
+[color]
+  grep = auto
+[difftool "sourcetree"]
+	cmd = opendiff \"$LOCAL\" \"$REMOTE\"
+	path = 
+[mergetool "sourcetree"]
+	cmd = /Applications/SourceTree.app/Contents/Resources/opendiff-w.sh \"$LOCAL\" \"$REMOTE\" -ancestor \"$BASE\" -merge \"$MERGED\"
+	trustExitCode = true

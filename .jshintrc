@@ -1,0 +1,24 @@
+{
+	"bitwise"      : true,
+	"curly"        : true,
+	"eqeqeq"       : true,
+	"immed"        : true,
+	"latedef"      : true,
+	"newcap"       : false,
+	"noarg"        : true,
+	"nonbsp"       : true,
+	"shadow"       : "outer",
+	"undef"        : true,
+	"unused"       : true,
+	"strict"       : true,
+
+  "onecase"      : false,
+
+	"node"         : true,
+	"white"        : false,
+
+	"predef"     : [
+	]
+}
+
+
