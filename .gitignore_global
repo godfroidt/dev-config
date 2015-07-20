@@ -1,0 +1,11 @@
+# mac specific
+.DS_Store
+.DS_Store?
+
+# editor files
+*.sw?
+*.bak
+
+# precompiled or binaries
+*.pyc
+*.egg-info
