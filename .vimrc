@@ -1,3 +1,25 @@
+" ------------------------------------------------------- Vundle initialization
+" following is required for vundle as per
+" https://github.com/VundleVim/Vundle.vim#quick-start
+
+set nocompatible
+filetype off
+
+" set the runtime path to include Vundle and initialize
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+Plugin 'gmarik/Vundle.vim'      " let Vundle manage Vundle, required
+
+"---------------------------------------------------------------- Plugins list
+
+Plugin 'scrooloose/syntastic'
+Plugin 'altercation/vim-colors-solarized'
+Plugin 'scrooloose/nerdtree'
+
+" now let vundle handle them all: all plugins must be defined before this
+call vundle#end()            " required
+filetype plugin indent on    " required
+
 " -------------------------------------------------------------------- General
 " don't bother about VI compatibility
 set nocompatible
@@ -18,11 +40,6 @@ set undolevels=256
 " no need for backups
 set nobackup
 " set noswapfile ' someday, maybe
-
-" ------------------------------------------------------------ Enable pathogen
-" installed with mkdir -p ~/.vim/autoload ~/.vim/bundle; \
-" curl -so ~/.vim/autoload/pathogen.vim https://raw.github.com/tpope/vim-pathogen/master/autoload/pathogen.vim
-call pathogen#infect()
 
 " --------------------------------------------------------------------- Source
 " tabspace to 2 spaces
@@ -49,11 +66,11 @@ set showmatch
 " backspace control
 set bs=indent,eol,start
 " automatic syntax coloring
-if version >= 600
-  syntax enable
-else
+"if version >= 600
+"  syntax enable
+"else
   set syntax=on
-endif
+"endif
 " line numbers everywere
 set number
 set list " we do what to show tabs, to ensure we get them out of my files
@@ -136,14 +153,16 @@ if (v:version >= 600)
   set guifont=Courier\ New:h12
   set cursorline
   " override colorscheme for SpecialKey to see listchars better
-  hi! SpecialKey guifg=DarkRed guibg=LightRed    
+  hi! SpecialKey guifg=DarkRed guibg=LightRed
   hi! NonText guifg=DarkRed
 endif
+" auto file type
+set filetype=vim
 
 " -------------------------------------------------------------- Auto Commands
 " Remember everything (position, folds, etc)
 au BufWinLeave * mkview
-au BufWinEnter * silent loadview
+au BufWinEnter *.* silent loadview
 " let terminal resize scale the internal windows
 " (from http://vimrcfu.com/snippet/186)
 au VimResized * :wincmd =
@@ -162,3 +181,4 @@ let g:jshintconfig = "~/.jshintrc"
 " same combo for visual and non visual mode
 map <leader>f :%!esformatter<CR>
 vmap <leader>f :!esformatter<CR>
+
