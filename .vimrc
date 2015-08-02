@@ -122,6 +122,10 @@ let g:mapleader = ","
 " Disable highlight on leader-space
 map <leader><space> :nohl<CR>
 
+" convert tabs to 2 spaces
+noremap <leader><tab> :1,$s/	/  /g<cr>
+vnoremap <leader><tab> :s/	/  /g<cr>
+
 " ,e/,w to open/save a file in the same directory as the currently edited file
 if has("unix")
   map <leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
