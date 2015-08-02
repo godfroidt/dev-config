@@ -15,6 +15,13 @@ Plugin 'gmarik/Vundle.vim'      " let Vundle manage Vundle, required
 Plugin 'scrooloose/syntastic'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'scrooloose/nerdtree'
+Plugin 'rakr/vim-togglebg'
+Plugin 'bling/vim-airline'
+Plugin 'Raimondi/delimitMate'
+
+" Usage reminder (I forget every time):
+"   install new plugins: :PluginInstall
+"   remove unused plugins: :PluginClean(!)
 
 " now let vundle handle them all: all plugins must be defined before this
 call vundle#end()            " required
@@ -66,11 +73,7 @@ set showmatch
 " backspace control
 set bs=indent,eol,start
 " automatic syntax coloring
-"if version >= 600
-"  syntax enable
-"else
-  set syntax=on
-"endif
+syntax on
 " line numbers everywere
 set number
 set list " we do what to show tabs, to ensure we get them out of my files
@@ -86,12 +89,22 @@ set termencoding=utf-8
 set fileencodings=utf-8,iso-8859-15
 
 " ---------------------------------------------------------------- status line
-" also see colorscheme in tgo.vim
-" status line looks like
-" filename modified readonly type buffernum,modified line,column percentinfile hexofcharundercursor
-set statusline=%-5t%-1m%r%y%=[%n%M]\ %l,%c\ %p%%\ 0x%B
 " always show the status
 set laststatus=2
+" make sure it's really shown
+set nolazyredraw
+" status line should be managed by vim-ariline when available, fallback to
+" my standard statusline otherwise
+if exists(':AirlineToggletruc')
+  " airline sympbols in gvim (w/ Source Code Pro font)
+  let g:airline_powerline_fonts = 1
+  let g:airline#extensions#syntastic#enabled = 1
+  let g:airline#extensions#capslock#enabled = 1
+else
+  " status line looks like
+  " filename modified readonly type buffernum,modified line,column percentinfile hexofcharundercursor
+  set statusline=%-5t%-1m%r%y%=[%n%M]\ %l,%c\ %p%%\ 0x%B
+endif
 
 " ------------------------------------------------------------------ Searching
 " search incrementaly and smartly
@@ -114,8 +127,6 @@ if has("unix")
   map <leader>e :e <C-R>=expand("%:p:h") . "/" <CR>
   map <leader>w :w <C-R>=expand("%:p:h") . "/" <CR>
   map <leader>r :r <C-R>=expand("%:p:h") . "/" <CR>
-  " <leader>f creates a filesystem tree starting at the current directory
-  map <leader>f :exe CreateMenuPath(expand("%:p:h"),"Tgo&Path") <CR>
 else
   map <leader>e :e <C-R>=expand("%:p:h") . "\\"<CR>
   map <leader>w :w <C-R>=expand("%:p:h") . "/" <CR>
@@ -150,7 +161,9 @@ abbr sop( System.out.println(
 if (v:version >= 600)
   colorscheme solarized
   set background=light
-  set guifont=Courier\ New:h12
+  "Source Code Pro from https://github.com/powerline/fonts
+  " degrades to Courier New
+  set guifont=Source\ Code\ Pro\ Medium:h12,Courier\ New:h12
   set cursorline
   " override colorscheme for SpecialKey to see listchars better
   hi! SpecialKey guifg=DarkRed guibg=LightRed
@@ -174,11 +187,11 @@ set clipboard=unnamed
 " Move visual block (from http://vimrcfu.com/snippet/77)
 vnoremap J :m '>+1<CR>gv=gv
 vnoremap K :m '<-2<CR>gv=gv
-let g:jshintconfig = "~/.jshintrc"
 
-" --- mapping for javascript formatter. Assumes npm install -g esformatter
-" and ~.esformatter config being available
-" same combo for visual and non visual mode
-map <leader>f :%!esformatter<CR>
-vmap <leader>f :!esformatter<CR>
-
+" --- mapping for javascript formatter. esformatter must be in PATH
+" expects ~.esformatter config being available
+if (executable('esformatter'))
+  " same combo for visual and non visual mode
+  map <leader>f :%!esformatter<CR>
+  vmap <leader>f :!esformatter<CR>
+endif
