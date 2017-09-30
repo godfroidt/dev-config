@@ -11,9 +11,10 @@ source ~/.bashrc
 # will overrided when needed
 
 alias ll='ls -laF --color=auto'
+alias l='ll'
 alias less='less -F' # auto exit if one screen or less
-alias grep='grep -iHn --color=auto'
-alias egrep='egrep --color=auto'
+alias cgrep='grep -iHn --color=auto'
+alias cegrep='egrep --color=auto'
 manf() { man $1 | less -p "^ +$2"; } # open manpage and jump to option
 randpwd() { tr -dc "[:alnum:]" < /dev/urandom | head -c ${1:-8}; echo; }
 spot() { locate "$@"; }
@@ -36,6 +37,8 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
     LC_ALL=C tr -dc 'A-Za-z0-9_!@#$%&()\-+=' < /dev/urandom | head -c ${1:-8};
     echo;
   }
+  # toggle viewing hidden files in finder
+  alias hidden='CUR=$( defaults read com.apple.finder AppleShowAllFiles ); SETTO="NO"; [ "$CUR" == "NO" ] && SETTO="YES"; defaults write com.apple.finder AppleShowAllFiles $SETTO; killall Finder /System/Library/CoreServices/Finder.app;'
 fi
 
 # Host specific stuff, it happens...

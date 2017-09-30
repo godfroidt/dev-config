@@ -24,7 +24,6 @@ addToPath() {
 }
 
 addToPath "${SCRIPTSDIR}"
-addToPath "$( npm bin -g 2> /dev/null)" # binaries in prefix defined in .npmrc
 
 # imagemagick
 export MAGICK_HOME="${SCRIPTSDIR}/ImageMagick-6.9.0"
@@ -34,5 +33,6 @@ addToPath "${MAGICK_HOME}/bin"
   unset MAGICK_HOME DYLD_LIBRARY_PATH
 }
 
-# mongodb
-addToPath "${SCRIPTSDIR}/mongodb/bin"
+# nvm
+export NVM_DIR="/Users/tgo/Documents/scripts/nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
