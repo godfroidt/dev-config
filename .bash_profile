@@ -24,7 +24,11 @@ export EDTIOR="/usr/bin/vim"
 # --------------------------------------------------------------------- History
 HISTCONTROL=ignoreboth  # avoid duplicates
 shopt -s histappend     # do not overwrite
-HISTSIZE=2000
+HISTSIZE=200000
+HISTFILESIZE=200000
+export HISTTIMEFORMAT="%s "
+export FULLHISTLOCAL="${HOME}/.full_history"
+export PROMPT_COMMAND='history -a; echo "${SERIALID};${UID};$$;$?;$-;$#;`history 1`" >> ${FULLHISTLOCAL}'
 
 # ----------------------------------------- Mac OS Specific aliases and helpers
 if [[ "$OSTYPE" == "darwin"* ]]; then

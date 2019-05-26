@@ -1,5 +1,15 @@
 #!/bin/bash
 
+# ---------------------------------------------------- OS and machine Detection
+# use the bash provide OSTYPE variable
+if [[ "$OSTYPE" == "linux-gnu" ]]; then
+  SERIALID=$( hostid )
+elif [[ "$OSTYPE" == "darwin"* ]]; then
+  SERIALID=$( ioreg -c IOPlatformExpertDevice -d 2 | awk -F\" '/IOPlatformSerialNumber/{print $(NF-1)}' )
+else
+  SERIALID="unknown"
+fi
+
 # ------------------------------------------------------- Generic PATH handling
 
 # on all OSes I store all my files under Document with the following hierarchy
