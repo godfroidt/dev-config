@@ -1,7 +1,4 @@
-builtin echo "CUSTOM ZSH CONFIG"
-# nvm
-export NVM_DIR="/Users/tgo/Documents/scripts/nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && . "$NVM_DIR/nvm.sh" # This loads nvm
+builtin echo "  load personal config"
 
 # ------------------------------------------------- Generic aliases and helpers
 # set all aliases for linux based systems.  Mac OS specific section below
@@ -15,6 +12,16 @@ alias cegrep='egrep --color=auto'
 manf() { man $1 | less -p "^ +$2"; } # open manpage and jump to option
 randpwd() { tr -dc "[:alnum:]" < /dev/urandom | head -c ${1:-8}; echo; }
 spot() { locate "$@"; }
+
+# json pretty printing (file or pipe) if jq is present
+which jqx &> /dev/null;
+if [ $? -eq 0 ]; then
+  alias ppj="jq '.'"
+else
+  alias ppj="echo missing jq"
+fi
+# if there is a venv activate it
+alias act="[ -d 'env'] && source env/bin/activate"
 
 # ------------------------------ Mac OS Specific rewrite of aliases and helpers
 if [[ "$OSTYPE" == "darwin"* ]]; then
@@ -31,3 +38,4 @@ if [[ "$OSTYPE" == "darwin"* ]]; then
   # toggle viewing hidden files in finder
   alias hidden='CUR=$( defaults read com.apple.finder AppleShowAllFiles ); SETTO="NO"; [ "$CUR" == "NO" ] && SETTO="YES"; defaults write com.apple.finder AppleShowAllFiles $SETTO; killall Finder /System/Library/CoreServices/Finder.app;'
 fi
+
