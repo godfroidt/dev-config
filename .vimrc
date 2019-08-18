@@ -18,6 +18,7 @@ Plugin 'scrooloose/nerdtree'
 Plugin 'rakr/vim-togglebg'
 Plugin 'bling/vim-airline'
 Plugin 'Raimondi/delimitMate'
+Plugin 'jremmen/vim-ripgrep'
 
 " Usage reminder (I forget every time):
 "   install new plugins: :PluginInstall
@@ -26,6 +27,7 @@ Plugin 'Raimondi/delimitMate'
 " now let vundle handle them all: all plugins must be defined before this
 call vundle#end()            " required
 filetype plugin indent on    " required
+let g:rg_command = 'rg --vimgrep -S'
 
 " -------------------------------------------------------------------- General
 " don't bother about VI compatibility
@@ -76,8 +78,7 @@ set bs=indent,eol,start
 syntax on
 " line numbers everywere
 set number
-set list " we do what to show tabs, to ensure we get them out of my files
-"set listchars=trail:-,nbsp:%
+set list
 set listchars=tab:▶▹,nbsp:␣,extends:…,trail:•
 " scroll context
 set scrolloff=7
@@ -185,13 +186,7 @@ au BufWinEnter *.* silent loadview
 au VimResized * :wincmd =
 au! bufwritepost .vimrc source %
 
-" ---------------------------------------------------------------- Experiments
-" doing this make yank selections go to OS clipboard
-set clipboard=unnamed
-" Move visual block (from http://vimrcfu.com/snippet/77)
-vnoremap J :m '>+1<CR>gv=gv
-vnoremap K :m '<-2<CR>gv=gv
-
+" ----------------------------------------------------------------- Javascript
 " --- mapping for javascript formatter. esformatter must be in PATH
 " expects ~.esformatter config being available
 if (executable('esformatter'))
@@ -199,3 +194,25 @@ if (executable('esformatter'))
   map <leader>f :%!esformatter<CR>
   vmap <leader>f :!esformatter<CR>
 endif
+" --- turn on eslint syntax check
+let g:syntastic_javascript_checkers=[ "eslint" ]
+" --- mapping for javascript formatter. esformatter must be in PATH
+" expects ~.esformatter config being available
+if (executable('esformatter'))
+  " same combo for visual and non visual mode
+  map <leader>f :%!esformatter<CR>
+  vmap <leader>f :!esformatter<CR>
+endif
+
+" ---------------------------------------------------------------- Experiments
+" doing this make yank selections go to OS clipboard
+set clipboard=unnamed
+" Move visual block (from http://vimrcfu.com/snippet/77)
+" vnoremap J :m '>+1<CR>gv=gv
+" vnoremap K :m '<-2<CR>gv=gv
+
+function! s:FilterQuickfixList(bang, pattern)
+  let cmp = a:bang ? '!~#' : '=~#'
+  call setqflist(filter(getqflist(), "bufname(v:val['bufnr']) " . cmp . " a:pattern"))
+endfunction
+command! -bang -nargs=1 -complete=file Qf call s:FilterQuickfixList(<bang>0, <q-args>)
